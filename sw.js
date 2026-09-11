@@ -1,6 +1,6 @@
 /* My Workouts: يفتح التطبيق بدون نت، ويجيب آخر نسخة لما يكون فيه نت.
-   قالب — build_app.py يعبّي 4b19474d60 و https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Inter:wght@300;400;500&display=swap وينسخه لـ my-workouts/sw.js */
-var VERSION = 'mw-4b19474d60';
+   قالب — build_app.py يعبّي 54a79d3d85 و https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Inter:wght@300;400;500&display=swap وينسخه لـ my-workouts/sw.js */
+var VERSION = 'mw-54a79d3d85';
 var FONTS = 'fonts-v1';
 var FONT_CSS = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Inter:wght@300;400;500&display=swap';
 var SHELL = ['./', './manifest.json', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png'];
@@ -26,11 +26,25 @@ function cacheFonts() {
   }).catch(function () {});
 }
 
+/* مكتبة الروبوت ثلاثي الأبعاد — تنحفظ عشان يتحرك بدون نت */
+var LIBS = ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'];
+function cacheLibs() {
+  return caches.open(FONTS).then(function (c) {
+    return Promise.all(LIBS.map(function (u) {
+      return c.match(u).then(function (hit) {
+        if (hit) return;
+        return fetch(u, { mode: 'cors' }).then(function (r) { if (r.ok) return c.put(u, r); });
+      });
+    }));
+  }).catch(function () {});
+}
+
 self.addEventListener('install', function (e) {
   e.waitUntil(
     caches.open(VERSION)
       .then(function (c) { return c.addAll(SHELL.map(fresh)); })
       .then(cacheFonts)
+      .then(cacheLibs)
       .then(function () { return self.skipWaiting(); })
   );
 });
@@ -75,7 +89,7 @@ self.addEventListener('fetch', function (e) {
   }
 
   /* الخطوط: من المحفوظ أول */
-  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
+  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com' || url.hostname === 'cdnjs.cloudflare.com') {
     e.respondWith(caches.open(FONTS).then(function (c) {
       return c.match(req, { ignoreVary: true }).then(function (hit) {
         return hit || fetch(req).then(function (r) {
