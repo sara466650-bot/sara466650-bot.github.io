@@ -1,6 +1,6 @@
 /* My Workouts: يفتح التطبيق بدون نت، ويجيب آخر نسخة لما يكون فيه نت.
-   قالب — build_app.py يعبّي 54a79d3d85 و https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Inter:wght@300;400;500&display=swap وينسخه لـ my-workouts/sw.js */
-var VERSION = 'mw-54a79d3d85';
+   قالب — build_app.py يعبّي 9524137f9d و https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Inter:wght@300;400;500&display=swap وينسخه لـ my-workouts/sw.js */
+var VERSION = 'mw-9524137f9d';
 var FONTS = 'fonts-v1';
 var FONT_CSS = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&family=Inter:wght@300;400;500&display=swap';
 var SHELL = ['./', './manifest.json', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png'];
